@@ -14,7 +14,8 @@ steps:
   displayName: 'Change to Buildservice Kube Context'
 
 - script: |
-    tanzu apps workload create tap-demo-app --local-path . --source-image harbor.buildmodernapps.com/apps/tap-demo-app:latest  --type web --label app.kubernetes.io/part-of=tanzu-java-web-app  --label tanzu.app.live.view="true"  --label tanzu.app.live.view.application.name="java-web" -y 
+    #tanzu apps workload delete tap-demo-app
+    tanzu apps workload apply tap-demo-app --local-path . --source-image harbor.buildmodernapps.com/apps/tap-demo-app:latest  --type web --label app.kubernetes.io/part-of=tanzu-java-web-app  --label tanzu.app.live.view="true"  --label tanzu.app.live.view.application.name="java-web" -y 
     kp image list
     kp build list
     sleep 15

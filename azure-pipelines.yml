@@ -10,10 +10,12 @@ pool:
   name: default
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: kubectl config use-context all-tap-all-the-time
+  displayName: 'Change to Buildservice Kube Context'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    kp image save tbs-demo-app  --tag harbor.buildmodernapps.com/apps/tbs-demo-app:latest --local-path .
+    kp build logs tbs-demo-app
+    kp image list
+    kp build list
+  displayName: 'Run TBS Build in current working directory'

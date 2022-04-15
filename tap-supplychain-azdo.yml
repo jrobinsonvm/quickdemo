@@ -1,0 +1,22 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: default
+
+steps:
+- script: kubectl config use-context all-tap-all-the-time
+  displayName: 'Change to Buildservice Kube Context'
+
+- script: |
+    tanzu apps workload create tap-demo-app --local-path . --source-image harbor.buildmodernapps.com/apps/tap-demo-app:latest  --type web --label app.kubernetes.io/part-of=tanzu-java-web-app  --label tanzu.app.live.view="true"  --label tanzu.app.live.view.application.name="java-web" -y 
+    kp build logs tap-demo-app
+    kp image list
+    kp build list
+    tanzu apps workload get tap-demo-app
+  displayName: 'Run TBS Build in current working directory'

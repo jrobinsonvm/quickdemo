@@ -15,7 +15,8 @@ steps:
 
 - script: |
     kp image save tbs-demo-app  --tag harbor.buildmodernapps.com/apps/tbs-demo-app:latest --local-path .
-    kp build logs tbs-demo-app
+    sleep 10
     kp image list
     kp build list
+    kp build logs tbs-demo-app
   displayName: 'Run TBS Build in current working directory'

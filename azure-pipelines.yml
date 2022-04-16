@@ -14,6 +14,9 @@ steps:
   displayName: 'Change to Buildservice Kube Context'
 
 - script: |
+    export TMC_API_TOKEN=$(TMC)
+    tmc login --name Automation  --no-configure
+    tmc cluster list --all
     kp image save tbs-demo-app  --tag harbor.buildmodernapps.com/apps/tbs-demo-app:latest --local-path .
     kp build logs tbs-demo-app
     kp image list

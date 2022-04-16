@@ -17,7 +17,7 @@ steps:
     export TMC_API_TOKEN=$(TMC)
     tmc login --name Automation  --no-configure
     tmc cluster list --all
-    kp image save tbs-demo-app  --tag harbor.buildmodernapps.com/apps/tbs-demo-app:latest --local-path .
+    kp image save tbs-demo-app  --tag harbor.buildmodernapps.com/apps/tbs-demo-app:$(Build.BuildNumber)	 --local-path .
     sleep 10
     kp image list
     kp build list

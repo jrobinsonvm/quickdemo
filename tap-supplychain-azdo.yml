@@ -10,7 +10,7 @@ pool:
   name: default
 
 steps:
-- script: kubectl config use-context all-tap-all-the-time
+- script: kubectl config use-context tap-on-k8s
   displayName: 'Change to Buildservice Kube Context'
 
 - script: |

@@ -22,7 +22,8 @@ steps:
     RunAsPreJob: true
 
 - script: |
-    echo $(all-tap-all-the-time) |base64 --decode >  /home/$(whoami)/.kube/config
+    export user=$(whoami)
+    echo $(all-tap-all-the-time) |base64 --decode >  /home/$user/.kube/config
     kubectl config use-context all-tap-all-the-time
     export TMC_API_TOKEN=$(TMC)
     tmc login --name Automation  --no-configure

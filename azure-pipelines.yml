@@ -9,11 +9,21 @@ trigger:
 pool:
   name: default
 
+
+
 steps:
-- script: kubectl config use-context all-tap-all-the-time
-  displayName: 'Change to Buildservice Kube Context'
+# - script: kubectl config use-context all-tap-all-the-time
+#   displayName: 'Change to Buildservice Kube Context'
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'SANDBOX_SOLUTIONS_SOUTH_JR (aab93c1b-c3a9-45ed-bb90-04e0c42bb133)'
+    KeyVaultName: 'kubeconfigs'
+    SecretsFilter: '*'
+    RunAsPreJob: true
 
 - script: |
+    echo $(all-tap-all-the-time) |base64 --decode >  /home/$(whoami)/.kube/config
+    kubectl config use-context all-tap-all-the-time
     export TMC_API_TOKEN=$(TMC)
     tmc login --name Automation  --no-configure
     tmc cluster list --all

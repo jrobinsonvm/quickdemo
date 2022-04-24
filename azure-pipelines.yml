@@ -26,6 +26,7 @@ steps:
     command: 'login'
 
 - script: |
+    mkdir -p ~/.kube/
     export user=$(whoami)
     echo $(all-tap-all-the-time) |base64 --decode >  ~/.kube/config
     kubectl config use-context all-tap-all-the-time

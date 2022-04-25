@@ -10,11 +10,25 @@ pool:
   name: default
 
 steps:
-- script: kubectl config use-context tap-on-k8s
-  displayName: 'Change to Buildservice Kube Context'
+# - script: kubectl config use-context all-tap-all-the-time
+#   displayName: 'Change to Buildservice Kube Context'
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'SANDBOX_SOLUTIONS_SOUTH_JR (aab93c1b-c3a9-45ed-bb90-04e0c42bb133)'
+    KeyVaultName: 'kubeconfigs'
+    SecretsFilter: '*'
+    RunAsPreJob: true
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Harbor Registry'
+    command: 'login'
 
 - script: |
-    #tanzu apps workload delete tap-demo-app
+    mkdir -p ~/.kube/
+    export user=$(whoami)
+    echo $(all-tap-all-the-time) |base64 --decode >  ~/.kube/config
+    kubectl config use-context all-tap-all-the-time
     tanzu apps workload apply tap-demo-app --local-path . --source-image harbor.buildmodernapps.com/apps/tap-demo-app:latest  --type web --label app.kubernetes.io/part-of=tanzu-java-web-app  --label tanzu.app.live.view="true"  --label tanzu.app.live.view.application.name="java-web" -y 
     kp image list
     kp build list
